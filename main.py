@@ -7,6 +7,9 @@ import pandas
 import numpy  as np
 import datetime
 
+import sqlalchemy
+sqlalchemy.__all__ = (sqlalchemy.__all__ + ['orm', 'sql', 'engine', 'exc', 'event', 'inspect', 'schema', 'types', 'util', 'create_engine', 'MetaData', 'Table', 'Column', 'Integer', 'String', 'Text', 'DateTime', 'Boolean', 'ForeignKey', 'Sequence', 'UniqueConstraint', 'Index', 'CheckConstraint', 'DefaultClause', 'UpdateBase', 'Insert', 'update', 'delete', 'select', 'func', 'bindparam', 'text', 'literal_column', 'cast', 'type_coerce', 'and_', 'or_', 'not_', 'between', 'case', 'null', 'nullsfirst', 'nullslast', 'asc', 'desc', 'alias', 'join', 'outerjoin', 'subquery', 'exists', 'any_', 'all_', 'between', 'distinct', 'except_', 'except_all', 'from_', 'group_by', 'having', 'intersect', 'intersect_all', 'limit', 'offset', 'order_by', 'select', 'select_from', 'union', 'union_all', 'where'])
+
 df  = pandas.read_csv("capitals.csv")
 countries    = df["country"]
 capitals = df["capital"]
