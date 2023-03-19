@@ -1,25 +1,19 @@
-version: '1.0'
-name: learn-api
+# Base image
+FROM python:3.8
 
-# Backend service using Flask and uWSGI
-backend:
-  # Use Python 3.8
-  python: '3.8'
-  # Install dependencies and uWSGI
-  build:
-    # Install dependencies and uWSGI
-    - pip install -r requirements.txt uwsgi
-  start:
-    # Upgrade the database
-    # Start the Flask app with uWSGI
-    - uwsgi --http :8080 --wsgi-file app.py --callable app --processes 4 --threads 2 --stats :9191
+# Set work directory
+WORKDIR /app
 
-  # Specify the path to the SQLite database file
-  envs:
-    DATABASE_URL: 'sqlite:///data/users.db'
+# Install dependencies
+RUN pip install --upgrade pip
+COPY requirements.txt /app/
+RUN pip install -r requirements.txt
 
+# Copy the app code
+COPY api.py /app/
 
-data:
+# Expose the port
+EXPOSE 8000
 
-   volumes:
-      - ./data:/app/data
+# Start the server using uwsgi
+CMD ["uwsgi", "--http", "0.0.0.0:8000", "--wsgi-file", "api.py", "--callable", "app", "--master", "--processes", "4", "--threads", "2"]
