@@ -100,7 +100,7 @@ def logout():
 
 @jwt.unauthorized_loader
 def unauthorized_response(error):
-   response = {
+    response = {
         'message': 'You are not authorized to access this resource'
     },401
     response.headers.add('Access-Control-Allow-Origin', '*')
