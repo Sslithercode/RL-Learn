@@ -95,13 +95,17 @@ def validate_token():
 def logout():
     response = {"msg": "logout successful"}
     unset_jwt_cookies(response)
+    response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
 @jwt.unauthorized_loader
 def unauthorized_response(error):
-    return{
+   response = {
         'message': 'You are not authorized to access this resource'
     },401
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -112,7 +116,9 @@ def login():
         return {'message': 'Invalid username or password'}, 401
     
     access_token = create_access_token(identity=user.id,expires_delta=datetime.timedelta(hours=10))
-    return {'access_token': access_token}, 200
+    response  = {'access_token': access_token}, 200
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route('/register', methods=['POST'])
@@ -129,7 +135,10 @@ def register():
     user.set_password(req_password)
     db.session.add(user)
     db.session.commit()
-    return {'message': 'User created successfully'}
+    response =  {'message': 'User created successfully'}
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+   
 
 @app.route("/flashcard/generate_question",methods=["GET"])
 @jwt_required()
@@ -143,7 +152,10 @@ def generate_question():
         q_agent = agents[user.username]
 
     current_question, current_answer = list(q_agent.flashcards.items())[q_agent.current_flashcard]
-    return {"question": current_question , "answer":current_answer}
+    response  = {"question": current_question , "answer":current_answer}
+    response.headers.add('Access-Control-Allow-Origin', '*')
+
+    return  response
   
     
 
@@ -180,7 +192,10 @@ def recv_answer():
 
     #selected_card = agent.flashcards[datahandler.get_var("selected_card_index")]
     #correct , avg_score  = agent.check_answer(usr_answer,selected_card)
-    return {"correct":correct,"answer":correct_answer}
+    response  = {"correct":correct,"answer":correct_answer}
+    response.headers.add('Access-Control-Allow-Origin', '*')
+
+    return response
     
 
 
